@@ -1,6 +1,6 @@
 # AgroSat Monitor Frontend
 
-Welcome to **AgroSat Monitor**, a modern, responsive frontend for a Low Earth Orbit (LEO)-based Disaster & Agriculture Monitoring Platform. This project is designed to showcase real-time satellite data visualization, disaster alerts, agricultural analytics, and team collaboration for the NASA Space Apps Challenge presentation.
+This is a prototype of AgroSat Monitor, showcasing the core features of a modern, responsive frontend for a Low Earth Orbit (LEO)-based Disaster & Agriculture Monitoring Platform. The prototype demonstrates real-time satellite data visualization, disaster alerts, agricultural analytics, and team collaboration, providing a tangible foundation for the full project and an engaging presentation for the NASA Space Apps Challenge.
 
 ---
 
@@ -10,17 +10,16 @@ Welcome to **AgroSat Monitor**, a modern, responsive frontend for a Low Earth Or
 - [Key Features](#key-features)
 - [Presentation Alignment](#presentation-alignment)
 - [Tech Stack](#tech-stack)
-- [Installation & Setup](#installation--setup)
 - [Usage](#usage)
 - [Future Enhancements](#future-enhancements)
 - [Team](#team)
-- [License](#license)
+
 
 ---
 
 ## Project Overview
 
-AgroSat Monitor enables users to visualize satellite imagery on a 3D interactive globe, monitor current disaster alerts (wildfires, floods, drought), analyze crop health risks, and simulate real-time notifications. It is built to be engaging and intuitive, with a smooth flow aligned to a 240-second NASA Space Apps presentation framework.
+The AgroSat Monitor basic prototype is currently under active development as part of our main project. It serves as an initial version that allows users to interact with a 3D satellite globe, monitor disaster alerts, analyze crop health risks, and simulate real-time notifications. This prototype provides a foundation for further enhancements and is designed to guide the development of the full project while demonstrating the core functionality and user experience.
 
 ---
 
@@ -58,29 +57,6 @@ This frontend is built specifically for the **240 SECONDS OF GLORY** NASA Space 
 
 ---
 
-## Installation & Setup
-
-1. **Clone the repository**
-
-git clone https://github.com/your-repo/agrosat-monitor-frontend.git
-cd agrosat-monitor-frontend
-
-text
-
-2. **Open the project**
-
-Open `index.html` directly in a modern browser or use a static server for better experience.
-
-3. **Optional: Use npm and live-server**
-
-npm install
-npm run dev
-
-text
-
-This will start a local development server with live reload on port 3000.
-
----
 
 ## Usage
 
@@ -103,19 +79,14 @@ This will start a local development server with live reload on port 3000.
 ---
 
 ## Team
-
-- **Alex Rodriguez** - Lead Developer
-- **Dr. Sarah Chen** - Data Scientist
-- **Marcus Johnson** - UI/UX Designer
-- **Priya Patel** - Systems Engineer
-
----
-
-## License
-
-This project is licensed under the MIT License.
+- **Marzan Akter ANika** - Team Leader
+- **MD Abu Sufian** - Lead Developer
+- **MD Fahad Hassan** - Data Scientist
+- **Sayed Hasan Emon** - UI/UX Designer
+- **Himel Paul** - Systems Engineer
 
 ---
+
 
 For questions or collaboration, reach out via the Contact section on the website.
 
