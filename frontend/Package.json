@@ -1,0 +1,29 @@
+{
+  "name": "agrosat-monitor-frontend",
+  "version": "1.0.0",
+  "description": "LEO-based Disaster & Agriculture Monitoring Platform Frontend",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=3000",
+    "build": "echo 'Static build - no compilation needed'",
+    "deploy": "echo 'Ready for deployment'"
+  },
+  "keywords": [
+    "agriculture",
+    "disaster-monitoring",
+    "satellite",
+    "LEO",
+    "three.js",
+    "webgl",
+    "responsive"
+  ],
+  "author": "Team AgroSat",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "chart.js": "^3.9.1",
+    "three": "^0.145.0"
+  }
+}

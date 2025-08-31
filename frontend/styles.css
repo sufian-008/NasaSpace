@@ -1,0 +1,228 @@
+/* Custom Variables */
+:root {
+    --primary-blue: #3B82F6;
+    --primary-green: #10B981;
+    --accent-yellow: #F59E0B;
+    --accent-red: #EF4444;
+    --dark-bg: #111827;
+    --darker-bg: #0F172A;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Navigation Styles */
+.nav-link {
+    @apply text-gray-300 hover:text-blue-400 transition-colors duration-300 px-3 py-2;
+}
+
+.nav-link:hover {
+    transform: translateY(-1px);
+}
+
+/* Button Styles */
+.btn-primary {
+    @apply bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center;
+}
+
+.btn-secondary {
+    @apply bg-transparent border-2 border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center;
+}
+
+/* Animated Background */
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="0.5" fill="white" opacity="0.8"/><circle cx="80" cy="40" r="0.3" fill="white" opacity="0.6"/><circle cx="40" cy="80" r="0.4" fill="white" opacity="0.7"/><circle cx="90" cy="10" r="0.2" fill="white" opacity="0.5"/><circle cx="10" cy="90" r="0.6" fill="white" opacity="0.9"/></svg>') repeat;
+    animation: moveStars 20s linear infinite;
+}
+
+@keyframes moveStars {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-100px); }
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+/* Card Styles */
+.dashboard-card {
+    @apply bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700 hover:border-blue-500 transition-all duration-300;
+}
+
+.problem-card {
+    @apply bg-gray-700 rounded-lg p-6 text-center hover:bg-gray-600 transition-all duration-300 transform hover:scale-105;
+}
+
+.team-member-card {
+    @apply bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition-all duration-300 transform hover:scale-105;
+}
+
+/* Team Avatar */
+.team-avatar {
+    @apply w-20 h-20 bg-gradient-to-br from-blue-400 to-green-400 rounded-full flex items-center justify-center mx-auto text-white;
+}
+
+/* Alert Styles */
+.alert-item {
+    @apply p-3 rounded border-l-4;
+}
+
+.alert-item.critical {
+    @apply bg-red-900 bg-opacity-30 border-red-400;
+}
+
+.alert-item.warning {
+    @apply bg-yellow-900 bg-opacity-30 border-yellow-400;
+}
+
+.alert-item.normal {
+    @apply bg-green-900 bg-opacity-30 border-green-400;
+}
+
+/* Progress Bars */
+.progress-bar {
+    @apply w-full bg-gray-700 rounded-full h-2;
+}
+
+.progress-fill {
+    @apply bg-blue-400 h-full rounded-full transition-all duration-500;
+}
+
+/* Filter Buttons */
+.filter-btn {
+    @apply px-3 py-1 text-sm rounded border border-gray-600 text-gray-300 hover:text-white hover:border-blue-400 transition-all duration-300;
+}
+
+.filter-btn.active {
+    @apply bg-blue-500 border-blue-500 text-white;
+}
+
+/* Feature Items */
+.feature-item {
+    @apply flex items-start space-x-4 p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300;
+}
+
+/* Social Links */
+.social-link {
+    @apply text-2xl text-gray-400 hover:text-blue-400 transition-colors duration-300 transform hover:scale-110;
+}
+
+/* Globe Container */
+#globe-container {
+    position: relative;
+    border: 2px solid #374151;
+}
+
+#globe-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+    @apply bg-gray-800 text-white p-8 rounded-lg max-w-2xl mx-auto mt-20 relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: gray-400;
+}
+
+.close:hover {
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .btn-primary, .btn-secondary {
+        @apply w-full justify-center mb-2;
+    }
+    
+    .dashboard-card {
+        @apply p-4;
+    }
+    
+    #globe-container {
+        height: 250px;
+    }
+}
+
+/* Loading Animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Hover Effects */
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1F2937;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
+}

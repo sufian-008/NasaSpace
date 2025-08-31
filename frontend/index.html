@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroSat Monitor - LEO Disaster & Agriculture Monitoring</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-gray-800 bg-opacity-95 backdrop-blur-sm">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-blue-400">
+                    <i class="fas fa-satellite-dish mr-2"></i>AgroSat Monitor
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#dashboard" class="nav-link">Dashboard</a>
+                    <a href="#team" class="nav-link">Team</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <button class="md:hidden" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed top-16 left-0 w-full bg-gray-800 z-40 hidden">
+        <div class="px-6 py-4 space-y-2">
+            <a href="#home" class="block nav-link">Home</a>
+            <a href="#dashboard" class="block nav-link">Dashboard</a>
+            <a href="#team" class="block nav-link">Team</a>
+            <a href="#about" class="block nav-link">About</a>
+            <a href="#contact" class="block nav-link">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section (WHO - 0-60s) -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-gray-900 to-green-900"></div>
+        <div class="stars"></div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+                <span class="text-blue-400">AgroSat</span> 
+                <span class="text-green-400">Monitor</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-300">
+                Real-time LEO satellite monitoring for disaster prevention and agricultural optimization in developing regions
+            </p>
+            <div class="space-y-4 md:space-y-0 md:space-x-4 md:flex md:justify-center">
+                <button onclick="scrollToSection('dashboard')" class="btn-primary">
+                    <i class="fas fa-rocket mr-2"></i>Launch Dashboard
+                </button>
+                <button onclick="scrollToSection('about')" class="btn-secondary">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement (WHY - 60-120s) -->
+    <section id="about" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-6 text-blue-400">The Problem We're Solving</h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                    Developing countries face critical challenges in disaster preparedness and agricultural management, 
+                    leading to billions in losses and food insecurity affecting millions.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="problem-card">
+                    <div class="text-red-400 text-4xl mb-4">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Disaster Response</h3>
+                    <p class="text-gray-300">
+                        Late detection of floods, droughts, and wildfires causes preventable damage to crops and communities.
+                    </p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Crop Management</h3>
+                    <p class="text-gray-300">
+                        Farmers lack real-time data on soil moisture, crop health, and optimal irrigation timing.
+                    </p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="text-blue-400 text-4xl mb-4">
+                        <i class="fas fa-satellite"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Data Access</h3>
+                    <p class="text-gray-300">
+                        Limited access to satellite imagery and predictive analytics in remote agricultural regions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard (WHAT - 120-180s) -->
+    <section id="dashboard" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-green-400">Our Solution Dashboard</h2>
+            
+            <!-- 3D Globe Container -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="dashboard-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-2xl font-bold">Interactive Earth Monitor</h3>
+                            <div class="flex space-x-2">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="wildfire">🔥 Wildfire</button>
+                                <button class="filter-btn" data-filter="flood">🌊 Flood</button>
+                                <button class="filter-btn" data-filter="drought">🌵 Drought</button>
+                            </div>
+                        </div>
+                        <div id="globe-container" class="h-96 bg-black rounded-lg relative">
+                            <canvas id="globe-canvas"></canvas>
+                            <div class="absolute top-4 left-4 bg-black bg-opacity-50 p-3 rounded">
+                                <div class="text-sm">
+                                    <div>🔴 Critical: <span id="critical-count">3</span></div>
+                                    <div>🟡 Warning: <span id="warning-count">7</span></div>
+                                    <div>🟢 Normal: <span id="normal-count">124</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analytics Panel -->
+                <div class="space-y-6">
+                    <div class="dashboard-card">
+                        <h3 class="text-lg font-bold mb-4">Current Alerts</h3>
+                        <div class="space-y-3">
+                            <div class="alert-item critical">
+                                <div class="flex justify-between">
+                                    <span>Wildfire - California</span>
+                                    <span class="text-red-400">Critical</span>
+                                </div>
+                                <div class="text-sm text-gray-400">2 hours ago</div>
+                            </div>
+                            <div class="alert-item warning">
+                                <div class="flex justify-between">
+                                    <span>Drought - Kenya</span>
+                                    <span class="text-yellow-400">Warning</span>
+                                </div>
+                                <div class="text-sm text-gray-400">6 hours ago</div>
+                            </div>
+                            <div class="alert-item normal">
+                                <div class="flex justify-between">
+                                    <span>Crop Health - India</span>
+                                    <span class="text-green-400">Good</span>
+                                </div>
+                                <div class="text-sm text-gray-400">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h3 class="text-lg font-bold mb-4">Risk Metrics</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span>Crop Health Risk</span>
+                                    <span>23%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 23%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span>Water Stress</span>
+                                    <span>67%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-yellow-400" style="width: 67%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span>Disaster Risk</span>
+                                    <span>45%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-red-400" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Section -->
+            <div class="grid md:grid-cols-2 gap-8 mt-8">
+                <div class="dashboard-card">
+                    <h3 class="text-xl font-bold mb-4">Historical Trends</h3>
+                    <canvas id="trendsChart" height="200"></canvas>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="text-xl font-bold mb-4">Alert Distribution</h3>
+                    <canvas id="alertsChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prototype & Impact (HOW - 180-240s) -->
+    <section id="prototype" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-blue-400">Prototype & Future Impact</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">Actionable Intelligence</h3>
+                    <div class="space-y-4">
+                        <div class="feature-item">
+                            <i class="fas fa-bell text-yellow-400"></i>
+                            <div>
+                                <h4 class="font-bold">Real-time Alerts</h4>
+                                <p class="text-gray-300">SMS and email notifications for immediate action</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line text-green-400"></i>
+                            <div>
+                                <h4 class="font-bold">Predictive Analytics</h4>
+                                <p class="text-gray-300">AI-powered forecasting for proactive measures</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt text-blue-400"></i>
+                            <div>
+                                <h4 class="font-bold">Mobile-First Design</h4>
+                                <p class="text-gray-300">Accessible on any device, anywhere</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 space-x-4">
+                        <button class="btn-primary" onclick="simulateSMSAlert()">
+                            <i class="fas fa-sms mr-2"></i>Simulate SMS Alert
+                        </button>
+                        <button class="btn-secondary" onclick="showImpactModal()">
+                            View Impact
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="text-xl font-bold mb-4">Live Simulation</h3>
+                    <div id="simulation-area" class="h-64 bg-black rounded-lg flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-satellite text-4xl text-blue-400 mb-4 animate-pulse"></i>
+                            <p class="text-gray-300">Click 'Simulate SMS Alert' to see live demo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-6 text-green-400">Meet Team AgroSat</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    A multidisciplinary team passionate about using space technology to solve global challenges
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="team-member-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mt-4">Alex Rodriguez</h3>
+                    <p class="text-blue-400 mb-2">Lead Developer</p>
+                    <p class="text-sm text-gray-300">
+                        Full-stack developer with expertise in satellite data processing and 3D visualization.
+                    </p>
+                </div>
+                
+                <div class="team-member-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mt-4">Dr. Sarah Chen</h3>
+                    <p class="text-blue-400 mb-2">Data Scientist</p>
+                    <p class="text-sm text-gray-300">
+                        PhD in Agricultural Engineering, specializing in remote sensing and crop monitoring.
+                    </p>
+                </div>
+                
+                <div class="team-member-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mt-4">Marcus Johnson</h3>
+                    <p class="text-blue-400 mb-2">UI/UX Designer</p>
+                    <p class="text-sm text-gray-300">
+                        Creative designer focused on making complex data accessible and actionable.
+                    </p>
+                </div>
+                
+                <div class="team-member-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mt-4">Priya Patel</h3>
+                    <p class="text-blue-400 mb-2">Systems Engineer</p>
+                    <p class="text-sm text-gray-300">
+                        Satellite systems expert with experience in LEO constellation management.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-6 text-blue-400">Get In Touch</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Ready to revolutionize disaster monitoring and agricultural management? Let's connect.
+            </p>
+            
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="social-link">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            
+            <button class="btn-primary">
+                <i class="fas fa-rocket mr-2"></i>Start Collaboration
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-blue-400 font-bold text-xl mb-4 md:mb-0">
+                    <i class="fas fa-satellite-dish mr-2"></i>AgroSat Monitor
+                </div>
+                <div class="text-gray-400 text-sm">
+                    © 2025 Team AgroSat. Built for NASA Space Apps Challenge.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Impact -->
+    <div id="impact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Expected Impact</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-green-400">Economic Benefits</h3>
+                    <ul class="text-sm space-y-1">
+                        <li>• 30% reduction in crop losses</li>
+                        <li>• $2.5B saved annually in developing regions</li>
+                        <li>• 15% increase in agricultural productivity</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-blue-400">Social Impact</h3>
+                    <ul class="text-sm space-y-1">
+                        <li>• 50M farmers with access to real-time data</li>
+                        <li>• 72 hours earlier disaster warnings</li>
+                        <li>• Improved food security for 200M people</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
