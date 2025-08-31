@@ -7,7 +7,6 @@ let isGlobeInitialized = false;
 document.addEventListener('DOMContentLoaded', function() {
     initializeNavigation();
     initializeGlobe();
-    initializeCharts();
     initializeEventListeners();
     generateDummyData();
 });
@@ -32,7 +31,6 @@ function initializeNavigation() {
                     block: 'start'
                 });
             }
-            // Hide mobile menu after click
             mobileMenu.classList.add('hidden');
         });
     });
@@ -45,27 +43,19 @@ function initializeGlobe() {
     
     if (!container || !canvas) return;
     
-    // Scene setup
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setClearColor(0x000011);
     
-    // Earth geometry and material
     const earthGeometry = new THREE.SphereGeometry(2, 64, 64);
-    
-    // Create earth texture (placeholder - using a procedural texture)
     const earthTexture = createEarthTexture();
-    const earthMaterial = new THREE.MeshPhongMaterial({ 
-        map: earthTexture,
-        shininess: 0.8
-    });
+    const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture, shininess: 0.8 });
     
     earth = new THREE.Mesh(earthGeometry, earthMaterial);
     scene.add(earth);
     
-    // Clouds
     const cloudsGeometry = new THREE.SphereGeometry(2.02, 64, 64);
     const cloudsMaterial = new THREE.MeshPhongMaterial({
         map: createCloudsTexture(),
@@ -75,7 +65,6 @@ function initializeGlobe() {
     clouds = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
     scene.add(clouds);
     
-    // Lighting
     const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
     scene.add(ambientLight);
     
@@ -83,13 +72,10 @@ function initializeGlobe() {
     directionalLight.position.set(-1, 0, 1);
     scene.add(directionalLight);
     
-    // Camera position
     camera.position.z = 5;
     
-    // Add disaster markers
     addDisasterMarkers();
     
-    // Mouse controls
     let isMouseDown = false;
     let mouseX = 0, mouseY = 0;
     
@@ -123,10 +109,8 @@ function initializeGlobe() {
         camera.position.z = Math.max(3, Math.min(10, camera.position.z));
     });
     
-    // Handle window resize
     window.addEventListener('resize', onWindowResize);
     
-    // Start animation loop
     animate();
     isGlobeInitialized = true;
 }
@@ -138,7 +122,6 @@ function createEarthTexture() {
     canvas.height = 128;
     const ctx = canvas.getContext('2d');
     
-    // Create a simple earth-like texture
     const gradient = ctx.createLinearGradient(0, 0, 0, 128);
     gradient.addColorStop(0, '#4A90E2');
     gradient.addColorStop(0.3, '#2E7D32');
@@ -149,12 +132,10 @@ function createEarthTexture() {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 256, 128);
     
-    // Add some noise for landmasses
     for (let i = 0; i < 1000; i++) {
         const x = Math.random() * 256;
         const y = Math.random() * 128;
         const size = Math.random() * 3;
-        
         ctx.fillStyle = Math.random() > 0.5 ? '#2E7D32' : '#1976D2';
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
@@ -176,12 +157,10 @@ function createCloudsTexture() {
     
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     
-    // Generate cloud patterns
     for (let i = 0; i < 50; i++) {
         const x = Math.random() * 256;
         const y = Math.random() * 128;
         const radius = Math.random() * 20 + 5;
-        
         ctx.globalAlpha = Math.random() * 0.5 + 0.2;
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, Math.PI * 2);
@@ -194,7 +173,7 @@ function createCloudsTexture() {
     return texture;
 }
 
-// Add disaster markers to the globe
+// Add disaster markers
 function addDisasterMarkers() {
     const disasters = [
         { lat: 34.0522, lon: -118.2437, type: 'wildfire', severity: 'critical' },
@@ -211,9 +190,7 @@ function addDisasterMarkers() {
     });
 }
 
-// Create individual disaster markers
 function createDisasterMarker(disaster) {
-    // Convert lat/lon to 3D coordinates
     const phi = (90 - disaster.lat) * (Math.PI / 180);
     const theta = (disaster.lon + 180) * (Math.PI / 180);
     
@@ -221,7 +198,6 @@ function createDisasterMarker(disaster) {
     const y = 2.1 * Math.cos(phi);
     const z = 2.1 * Math.sin(phi) * Math.sin(theta);
     
-    // Create marker geometry
     const geometry = new THREE.SphereGeometry(0.05, 8, 8);
     let material;
     
@@ -248,11 +224,9 @@ function animate() {
     requestAnimationFrame(animate);
     
     if (earth && clouds) {
-        // Rotate earth slowly
         earth.rotation.y += 0.002;
         clouds.rotation.y += 0.0015;
         
-        // Animate markers
         alertMarkers.forEach(marker => {
             marker.scale.setScalar(1 + 0.3 * Math.sin(Date.now() * 0.005));
         });
@@ -273,54 +247,18 @@ function onWindowResize() {
     renderer.setSize(container.clientWidth, container.clientHeight);
 }
 
-// Initialize Charts
-function initializeCharts() {
-    // Alerts Distribution Chart
-    const alertsCtx = document.getElementById('alertsChart');
-    if (alertsCtx) {
-        new Chart(alertsCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Critical', 'Warning', 'Normal'],
-                datasets: [{
-                    data: [3, 7, 124],
-                    backgroundColor: ['#EF4444', '#F59E0B', '#10B981'],
-                    borderWidth: 2,
-                    borderColor: '#1F2937'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#ffffff'
-                        }
-                    }
-                }
-            }
-        });
-    }
-}
-
 // Initialize Event Listeners
 function initializeEventListeners() {
-    // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remove active class from all buttons
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
             this.classList.add('active');
             
-            // Filter logic here (placeholder)
             const filter = this.dataset.filter;
             filterDisasters(filter);
         });
     });
     
-    // Modal functionality
     const modal = document.getElementById('impact-modal');
     const closeBtn = modal.querySelector('.close');
     
@@ -335,23 +273,15 @@ function initializeEventListeners() {
     });
 }
 
-// Filter disasters on globe
 function filterDisasters(filter) {
     alertMarkers.forEach(marker => {
-        if (filter === 'all' || marker.userData.type === filter) {
-            marker.visible = true;
-        } else {
-            marker.visible = false;
-        }
+        marker.visible = (filter === 'all' || marker.userData.type === filter);
     });
 }
 
-// Generate and update dummy data
 function generateDummyData() {
-    // Update alert counts
     updateAlertCounts();
     
-    // Simulate real-time updates
     setInterval(() => {
         updateAlertCounts();
         updateRiskMetrics();
@@ -373,27 +303,12 @@ function updateRiskMetrics() {
     const waterStress = Math.floor(Math.random() * 60) + 20;
     const disasterRisk = Math.floor(Math.random() * 80) + 10;
     
-    // Update progress bars with animation
-    setTimeout(() => {
-        document.querySelector('.progress-fill').style.width = cropRisk + '%';
-    }, 100);
-    
-    setTimeout(() => {
-        document.querySelectorAll('.progress-fill')[1].style.width = waterStress + '%';
-    }, 200);
-    
-    setTimeout(() => {
-        document.querySelectorAll('.progress-fill')[2].style.width = disasterRisk + '%';
-    }, 300);
+    setTimeout(() => { document.querySelector('.progress-fill').style.width = cropRisk + '%'; }, 100);
+    setTimeout(() => { document.querySelectorAll('.progress-fill')[1].style.width = waterStress + '%'; }, 200);
+    setTimeout(() => { document.querySelectorAll('.progress-fill')[2].style.width = disasterRisk + '%'; }, 300);
 }
 
-// Utility Functions
-function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
-    }
-}
+
 
 function simulateSMSAlert() {
     const simulationArea = document.getElementById('simulation-area');
@@ -406,9 +321,9 @@ function simulateSMSAlert() {
                 <p class="text-sm">SMS dispatched to 1,247 farmers in affected region</p>
             </div>
             <div class="bg-gray-700 p-4 rounded-lg text-left text-sm">
-                <div class="text-green-400 mb-2">📱 SMS Alert:</div>
+                <div class="text-green-400 mb-2"> SMS Alert:</div>
                 <div class="text-white">
-                    "⚠️ DROUGHT WARNING: Severe water stress detected in your region. 
+                    "DROUGHT WARNING: Severe water stress detected in your region. 
                     Implement conservation measures immediately. 
                     Check AgroSat dashboard for detailed guidance."
                 </div>
@@ -416,7 +331,6 @@ function simulateSMSAlert() {
         </div>
     `;
     
-    // Reset after 5 seconds
     setTimeout(() => {
         simulationArea.innerHTML = `
             <div class="text-center">
@@ -431,11 +345,9 @@ function showImpactModal() {
     document.getElementById('impact-modal').style.display = 'block';
 }
 
-// Error handling for Three.js
 window.addEventListener('error', function(e) {
     if (e.message.includes('three') || e.message.includes('WebGL')) {
         console.warn('WebGL/Three.js not supported, falling back to 2D visualization');
-        // Fallback to 2D map or static image
         const globeContainer = document.getElementById('globe-container');
         if (globeContainer) {
             globeContainer.innerHTML = `
@@ -451,5 +363,4 @@ window.addEventListener('error', function(e) {
     }
 });
 
-// Performance monitoring
 console.log('AgroSat Monitor Frontend Loaded Successfully');
