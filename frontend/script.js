@@ -275,51 +275,6 @@ function onWindowResize() {
 
 // Initialize Charts
 function initializeCharts() {
-    // Historical Trends Chart
-    const trendsCtx = document.getElementById('trendsChart');
-    if (trendsCtx) {
-        new Chart(trendsCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Crop Health Index',
-                    data: [75, 78, 82, 79, 85, 88],
-                    borderColor: '#10B981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    tension: 0.4
-                }, {
-                    label: 'Disaster Risk Level',
-                    data: [45, 52, 38, 65, 42, 35],
-                    borderColor: '#EF4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#ffffff'
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: { color: '#ffffff' },
-                        grid: { color: '#374151' }
-                    },
-                    y: {
-                        ticks: { color: '#ffffff' },
-                        grid: { color: '#374151' }
-                    }
-                }
-            }
-        });
-    }
-    
     // Alerts Distribution Chart
     const alertsCtx = document.getElementById('alertsChart');
     if (alertsCtx) {
