@@ -198,10 +198,11 @@ async function fetchEONETAlerts() {
         const alertsList = document.getElementById('alerts-list');
         alertsList.innerHTML = '';
 
-        let critical = 0, warning = 0, normal = 0;
+        let criticalCount = 0, warningCount = 0, normalCount = 0;
+        let added = {critical:false, warning:false, normal:false};
 
-        eonetEvents.forEach(ev => {
-            if (!ev.geometry || ev.geometry.length === 0) return;
+        for (let ev of eonetEvents) {
+            if (!ev.geometry || ev.geometry.length === 0) continue;
 
             const coords = ev.geometry[0].coordinates;
             const type = ev.categories[0].title.toLowerCase();
@@ -210,11 +211,11 @@ async function fetchEONETAlerts() {
             else if (type.includes('storm') || type.includes('flood')) severity = 'warning';
 
             // Count severity
-            if (severity === 'critical') critical++;
-            else if (severity === 'warning') warning++;
-            else normal++;
+            if (severity === 'critical') criticalCount++;
+            else if (severity === 'warning') warningCount++;
+            else normalCount++;
 
-            // Create marker for globe
+            // Marker for globe
             const markerGeo = new THREE.SphereGeometry(0.05, 8, 8);
             let color = 0x00ff00;
             if (severity === 'critical') color = 0xff0000;
@@ -222,7 +223,6 @@ async function fetchEONETAlerts() {
             const markerMat = new THREE.MeshBasicMaterial({ color });
             const marker = new THREE.Mesh(markerGeo, markerMat);
 
-            // Lat/Lon -> XYZ
             const lon = coords[0] * Math.PI / 180;
             const lat = coords[1] * Math.PI / 180;
             const radius = 2;
@@ -234,28 +234,32 @@ async function fetchEONETAlerts() {
             scene.add(marker);
             alertMarkers.push(marker);
 
-            // Populate alerts list in HTML
-            const alertItem = document.createElement('div');
-            alertItem.classList.add('alert-item', 'p-2', 'rounded', 'bg-gray-700', 'flex', 'justify-between', 'items-center');
-            alertItem.innerHTML = `
-                <span>${ev.title}</span>
-                <span class="${severity === 'critical' ? 'text-red-400' : severity === 'warning' ? 'text-yellow-400' : 'text-green-400'} font-bold">${severity.toUpperCase()}</span>
-            `;
-            alertsList.appendChild(alertItem);
-        });
+            // Populate alerts list: only first of each severity
+            if (!added[severity]) {
+                const alertItem = document.createElement('div');
+                alertItem.classList.add('alert-item', 'p-2', 'rounded', 'bg-gray-700', 'flex', 'justify-between', 'items-center');
+                alertItem.innerHTML = `
+                    <span>${ev.title}</span>
+                    <span class="${severity === 'critical' ? 'text-red-400' : severity === 'warning' ? 'text-yellow-400' : 'text-green-400'} font-bold">${severity.toUpperCase()}</span>
+                `;
+                alertsList.appendChild(alertItem);
+                added[severity] = true;
+            }
+        }
 
-        // Update risk metrics counts
-        document.getElementById('critical-count').textContent = critical;
-        document.getElementById('warning-count').textContent = warning;
-        document.getElementById('normal-count').textContent = normal;
+        // Update counts
+        document.getElementById('critical-count').textContent = criticalCount;
+        document.getElementById('warning-count').textContent = warningCount;
+        document.getElementById('normal-count').textContent = normalCount;
 
         // Update charts
-        updateCharts(critical, warning, normal);
+        updateCharts(criticalCount, warningCount, normalCount);
 
     } catch (err) {
         console.error(err);
     }
 }
+
 
 
 // Risk Metrics Random Update (Progress bar + Percentage)
