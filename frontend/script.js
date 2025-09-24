@@ -101,57 +101,48 @@ function animate(){
 }
 
 // Fetch NASA EONET Alerts
-async function fetchEONETAlerts(){
-    try{
+async function fetchEONETAlerts() {
+    try {
         const res = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events');
         const data = await res.json();
         eonetEvents = data.events;
 
-        // Remove previous markers
-        alertMarkers.forEach(m=>scene.remove(m));
-        alertMarkers=[];
+        // Clear previous markers and alert list
+        alertMarkers.forEach(m => scene.remove(m));
+        alertMarkers = [];
+        const alertsList = document.getElementById('alerts-list');
+        alertsList.innerHTML = '';
 
-        let critical=0, warning=0, normal=0;
-        eonetEvents.forEach(ev=>{
-            if(!ev.geometry || ev.geometry.length===0) return;
-            const coords = ev.geometry[0].coordinates;
+        let added = {critical:false, warning:false, normal:false};
+
+        for (let ev of eonetEvents) {
+            if (!ev.geometry || ev.geometry.length === 0) continue;
+
             const type = ev.categories[0].title.toLowerCase();
-            let severity='normal';
-            if(type.includes('fire')) severity='critical';
-            else if(type.includes('storm')||type.includes('flood')) severity='warning';
+            let severity = 'normal';
+            if (type.includes('fire')) severity = 'critical';
+            else if (type.includes('storm') || type.includes('flood')) severity = 'warning';
 
-            if(severity==='critical') critical++;
-            if(severity==='warning') warning++;
-            if(severity==='normal') normal++;
+            // Only add first occurrence of each severity
+            if (!added[severity]) {
+                const alertItem = document.createElement('div');
+                alertItem.classList.add('alert-item', 'p-2', 'rounded', 'bg-gray-700', 'flex', 'justify-between', 'items-center');
+                alertItem.innerHTML = `
+                    <span>${ev.title}</span>
+                    <span class="${severity === 'critical' ? 'text-red-400' : severity === 'warning' ? 'text-yellow-400' : 'text-green-400'} font-bold">${severity.toUpperCase()}</span>
+                `;
+                alertsList.appendChild(alertItem);
+                added[severity] = true;
+            }
 
-            // Marker
-            const markerGeo = new THREE.SphereGeometry(0.05,8,8);
-            let color=0x00ff00;
-            if(severity==='critical') color=0xff0000;
-            else if(severity==='warning') color=0xffff00;
-            const markerMat = new THREE.MeshBasicMaterial({color});
-            const marker = new THREE.Mesh(markerGeo, markerMat);
-
-            // Lat/Lon -> XYZ
-            const lon = coords[0]*Math.PI/180;
-            const lat = coords[1]*Math.PI/180;
-            const radius = 2;
-            marker.position.set(
-                radius*Math.cos(lat)*Math.cos(lon),
-                radius*Math.sin(lat),
-                -radius*Math.cos(lat)*Math.sin(lon)
-            );
-            scene.add(marker);
-            alertMarkers.push(marker);
-        });
-
-        document.getElementById('critical-count').textContent=critical;
-        document.getElementById('warning-count').textContent=warning;
-        document.getElementById('normal-count').textContent=normal;
-
-        updateCharts(critical,warning,normal);
-    }catch(err){console.error(err);}
+            // Stop loop if all 3 are added
+            if (added.critical && added.warning && added.normal) break;
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
+
 
 // Initialize Charts
 function initializeCharts(){
